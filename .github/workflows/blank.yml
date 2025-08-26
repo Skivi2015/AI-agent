@@ -1,0 +1,104 @@
+# Flowise Autonomous "Jarvis" Agent
+
+This repository provisions a Flowise autonomous agent capable of:
+- Research (web/Bing) and reasoning (LLM)
+- GitHub code reading, multi-file refactors, bug fixing, PR creation
+- Automated code review comments
+- Triggering GitHub Actions workflows
+- Feedback loop for iterative improvement
+- Reporting aggregation
+
+## Contents
+- Docker Compose (optional) to run Flowise
+- Custom Flowise nodes under `packages/nodes/`
+- Import script to register a predefined Flow (ExportData.json)
+- Advanced GitHub integration nodes (single & multi-file)
+- Code review and workflow trigger nodes
+- Feedback loop node
+- Security guidance
+
+## Quick Start
+
+### 1. Clone & Enter
+```bash
+git clone https://github.com/Skivi2015/flowise-jarvis-agent.git
+cd flowise-jarvis-agent
+```
+
+### 2. Create .env
+Copy `.env.example` to `.env` and fill in real secrets.
+```bash
+cp .env.example .env
+```
+
+### 3. (Optional) Launch Flowise via Docker
+```bash
+docker compose up -d
+# Flowise UI: http://localhost:3000
+```
+
+### 4. Install Node Dependencies (if running Flowise from source)
+If you already have a Flowise source tree, copy `packages/nodes/*` into its nodes folder and run:
+```bash
+npm install
+```
+
+### 5. Import Flow / Register Nodes
+Ensure Flowise API key set (FLOWISE_API_KEY in .env). Then:
+```bash
+node scripts/import-flowise-flow.js flow/ExportData.json
+```
+
+### 6. Use in Flowise UI
+Open the UI, verify the flow "Jarvis Autonomous Agent" appears. Trigger with a goal input.
+
+## Safety / Review
+By default, nodes create PRs (not direct pushes) for safety. Review PR output before merging.
+
+## Extend
+- Add tests invocation: integrate a test runner node
+- Add Slack/Email notifications from ReportingNode
+- Add vector retrieval for code context
+
+See `docs/ai-agent-workflow.md` for architecture.
+
+## Revoking Old GitHub Token
+Since a token was exposed earlier, revoke it immediately and issue a new one.
+
+## License
+(Choose a license, e.g., MIT)# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
