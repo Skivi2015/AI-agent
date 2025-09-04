@@ -1,6 +1,6 @@
 import sys
 from ai_agent.core import Agent
-from ai_agent.plugins import load_plugins
+from ai_agent.plugins_loader import load_plugins
 
 def main():
     agent = Agent()
